@@ -17,22 +17,16 @@ public class Solution {
      * @return: a middle node of the linked list
      */
     public ListNode middleNode(ListNode head) {
-        if (head == null) {
-            return null;
-        }
-        if (head.next == null) {
+        if (head == null || head.next == null) {
             return head;
         }
-        ListNode left = head;
-        ListNode right = head;
-        while (right.next != null) {
-            right = right.next;
-            right = right.next;
-            if (right == null) {
-                return left;
-            }
-            left = left.next;
+        
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
         }
-        return left;
+        return slow;
     }
 }
