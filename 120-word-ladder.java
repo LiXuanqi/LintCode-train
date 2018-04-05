@@ -55,7 +55,8 @@ public class Solution {
                     continue;
                 }
                 String newWord = replace(word, i, j);
-                if (dict.contains(newWord)) {
+                // O(L); String is immutable
+                if (dict.contains(newWord)) { //O(size of key) = O(L);
                     result.add(newWord);
                 }
             }
