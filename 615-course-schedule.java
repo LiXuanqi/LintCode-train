@@ -9,7 +9,7 @@ public class Solution {
         
         
         HashMap<Integer, HashSet<Integer>> graph = buildGraph(prerequisites);
-        HashMap<Integer, Integer> map = findAllIndegree(prerequisites);
+        HashMap<Integer, Integer> map = findAllIndegree(graph);
         Queue<Integer> queue = new LinkedList<>();
         
         int count = 0;
@@ -56,29 +56,24 @@ public class Solution {
         return graph;
     }
     
-    private HashMap<Integer, Integer> findAllIndegree(int[][] prerequisites) {
-        // remove duplicated prerequisites.
-        ArrayList<int[]> courses = new ArrayList<>();
-        Set<String> visited = new HashSet<>();
-        for (int[] course : prerequisites) {
-            if (visited.contains(Arrays.toString(course))) {
-                continue;
-            }
-            
-            courses.add(course);
-            visited.add(Arrays.toString(course));
-        }
-        
-        
-        System.out.print(courses);
+    private HashMap<Integer, Integer> findAllIndegree(HashMap<Integer, HashSet<Integer>> graph) {
+
         HashMap<Integer, Integer> map = new HashMap<>();
-        for (int[] course : courses) {
-            if (!map.containsKey(course[0])) {
-                map.put(course[0], 0);
+        
+        // hashmap traversal
+        Iterator iter = graph.entrySet().iterator();
+        while (iter.hasNext()) {
+            Map.Entry entry = (Map.Entry) iter.next();
+            Object key = entry.getKey();
+            HashSet<Integer> val = (HashSet<Integer>) entry.getValue();
+            for (int neighbor : val) {
+                if (!map.containsKey(neighbor)) {
+                    map.put(neighbor, 0);
+                }
+                map.put(neighbor, map.get(neighbor) + 1);
             }
-            map.put(course[0], map.get(course[0]) + 1);
         }
-        System.out.print(map);
+        
         return map;
     }
 }
