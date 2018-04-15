@@ -58,3 +58,6 @@ public class Solution {
         }
     }
 }
+
+// note:
+// boolean[] visited could replace the temp and happend.
