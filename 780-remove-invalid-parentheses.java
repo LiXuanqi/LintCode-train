@@ -28,7 +28,6 @@ public class Solution {
     
     private void dfs(int start, int l, int r, String s, List<String> result) {
         if (l == 0 && r == 0) {
-            System.out.print("hi");
             if (isValid(s)) {
                 result.add(s);
             }
