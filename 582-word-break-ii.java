@@ -5,38 +5,45 @@ public class Solution {
      * @return: All possible sentences.
      */
     public List<String> wordBreak(String s, Set<String> wordDict) {
-        List<String> result = new ArrayList<>();
-        
-        dfs(0, new ArrayList<>(), s, wordDict, result);
-        
-        return result;
+        HashMap<String, List<String>> memo = new HashMap<>();
+      
+        return wordBreakHelper(s, wordDict, memo);
     }
     
-    private void dfs(int start, List<String> temp, String s, Set<String> wordDict, List<String> result) {
-        if (start == s.length()) {
-            
-            String words = new String();
-            for (String word : temp) {
-                if (words.length() == 0) {
-                    words = words + word;
-                } else {
-                    words = words + ' ' + word;  
-                }
-            }
-            
-            result.add(words);
+    private List<String> wordBreakHelper(String s, 
+                                        Set<String> wordDict, 
+                                        HashMap<String, List<String>> memo) {
+        if (memo.containsKey(s)) {
+            return memo.get(s);
         }
-        for (int i = start; i < s.length(); i++) {
-            String subString = s.substring(start, i + 1);
+        // note: if result is as a parameter of function, it will have a error.
+        List<String> result = new ArrayList<>();
+        
+        if (s.length() == 0) {
+            return result;
+        }
+        if (wordDict.contains(s)) {
+            result.add(s);
+        }
+        for (int i = 0; i < s.length(); i++) {
+            String subString = s.substring(0, i + 1);
             if (!wordDict.contains(subString)) {
                 continue;
             }
-            temp.add(subString);
-            dfs(i + 1, temp, s, wordDict, result);
-            temp.remove(temp.size() - 1);
+            
+            String suffix = s.substring(i + 1);
+            List<String> segmentations = wordBreakHelper(suffix, wordDict, memo);
+            
+            for (String segmentation : segmentations) {
+                result.add(subString + ' ' + segmentation);
+            }
         }
+        
+        memo.put(s, result);
+        return result;
     }
 }
 
-// note: 
+// note:
 // just dfs will memory limit Exceeded.
+// 
